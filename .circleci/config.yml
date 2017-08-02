@@ -1,0 +1,14 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: abcum/circle-node:latest
+    working_directory: /js/src/github.com/abcum/ember-surreal
+    steps:
+      - checkout
+      - run:
+          name: Install
+          command: make install
+      - run:
+          name: Tests
+          command: make tests
