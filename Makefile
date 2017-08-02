@@ -12,56 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-GO ?= go
-
-# The `make default` command cleans
-# the go build and test files and
-# then runs a build and install.
-
 .PHONY: default
 default:
 	@echo "Choose a Makefile target:"
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print "  - " $$1}}' | sort
-
-# The `make test` command runs the
-# preconfigured tests found in the
-# prject directory.
 
 .PHONY: tests
 tests:
 	@echo "Tests..."
 	npm test
 
-# The `make setup` command installs
-# the 3rd party dependencies needed
-# to run this package.
-
-.PHONY: setup
-setup:
-	@echo "Setup..."
-	npm install -g bower
-	npm install -g ember-cli@2.13.2
-
-# The `make install` command installs
-# the 3rd party dependencies needed
-# to run this package.
-
 .PHONY: install
 install:
 	@echo "Installing..."
-	npm cache clean && bower cache clean
-	rm -rf node_modules bower_components dist tmp
-	npm install && bower install
-
-# The `make upgrade` command updates
-# ember-cli and runs the ember-cli
-# init command.
+	rm -rf node_modules dist tmp
+	npm install
 
 .PHONY: upgrade
 upgrade:
 	@echo "Upgrading..."
-	npm cache clean && bower cache clean
-	rm -rf node_modules bower_components dist tmp
+	rm -rf node_modules dist tmp
 	npm install --save-dev ember-cli@2.13.2
-	npm install && bower install
+	npm install
 	ember init
