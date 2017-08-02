@@ -1,17 +1,20 @@
 {
-  "name": "ember-surreal",
+  "name": "@abcum/ember-surreal",
   "version": "0.0.0",
   "description": "The default blueprint for ember-cli addons.",
   "keywords": [
     "ember-addon"
   ],
   "license": "MIT",
-  "author": "",
+  "author": "Tobie Morgan Hitchcock",
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abcum/ember-surreal.git"
+  },
   "scripts": {
     "build": "ember build",
     "start": "ember server",
