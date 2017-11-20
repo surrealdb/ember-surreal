@@ -9,12 +9,14 @@ module.exports = {
     'Chrome'
   ],
   browser_args: {
-    'Chrome': [
-      '--headless',
-      '--no-sandbox',
-      '--disable-gpu',
-      '--remote-debugging-port=9222',
-      '--remote-debugging-address=0.0.0.0'
-    ]
+    Chrome: {
+      mode: 'ci',
+      args: [
+        '--disable-gpu',
+        '--headless',
+        '--remote-debugging-port=9222',
+        '--window-size=1440,900'
+      ]
+    },
   }
 };
