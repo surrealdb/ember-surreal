@@ -1,14 +1,14 @@
 # ember-surreal
 
-A tool for Ember.js enabling automatic updates using HTML5 Application Cache.
+A realtime data adapter for integrating SurrealDB with ember-data in Ember.js.
 
-[![](https://img.shields.io/circleci/project/abcum/ember-surreal/master.svg?style=flat-square)](https://circleci.com/gh/abcum/ember-surreal) [![](https://img.shields.io/npm/v/@abcum/ember-surreal.svg?style=flat-square)](https://www.npmjs.com/package/@abcum/ember-surreal) [![](https://img.shields.io/badge/ember-2.1.0+-orange.svg?style=flat-square)](https://github.com/abcum/ember-surreal) [![](https://david-dm.org/abcum/ember-surreal/status.svg?style=flat-square)](https://david-dm.org/abcum/ember-surreal) [![](https://david-dm.org/abcum/ember-surreal/dev-status.svg?style=flat-square)](https://david-dm.org/abcum/ember-surreal?type=dev) [![](https://img.shields.io/badge/license-MIT-00bfff.svg?style=flat-square)](https://github.com/abcum/ember-surreal) 
+[![](https://img.shields.io/circleci/project/surrealdb/ember-surreal/master.svg?style=flat-square)](https://circleci.com/gh/surrealdb/ember-surreal) [![](https://img.shields.io/npm/v/ember-surreal.svg?style=flat-square)](https://www.npmjs.com/package/ember-surreal) [![](https://img.shields.io/badge/ember-2.16.1+-orange.svg?style=flat-square)](https://github.com/surrealdb/ember-surreal) [![](https://david-dm.org/surrealdb/ember-surreal/status.svg?style=flat-square)](https://david-dm.org/surrealdb/ember-surreal) [![](https://david-dm.org/surrealdb/ember-surreal/dev-status.svg?style=flat-square)](https://david-dm.org/surrealdb/ember-surreal?type=dev) [![](https://img.shields.io/badge/license-MIT-00bfff.svg?style=flat-square)](https://github.com/surrealdb/ember-surreal) 
 
 ## Usage
 
 ### Installation
 
-`ember install @abcum/ember-surreal`
+`ember install ember-surreal`
 
 ### Examples
 
