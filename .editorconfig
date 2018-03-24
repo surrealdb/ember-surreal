@@ -1,6 +1,6 @@
-# EditorConfig coding styles definitions. For more information about the
-# properties used in this file, please see the EditorConfig documentation:
-# http://editorconfig.org/
+# EditorConfig helps developers define and maintain consistent
+# coding styles between different editors and IDEs
+# editorconfig.org
 
 root = true
 

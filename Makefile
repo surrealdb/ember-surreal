@@ -32,6 +32,6 @@ install:
 upgrade:
 	@echo "Upgrading..."
 	rm -rf node_modules dist tmp
-	npm install --save-dev ember-cli@2.17.2
+	npm install --save-dev ember-cli@3.0.0
 	npm install
 	ember init
