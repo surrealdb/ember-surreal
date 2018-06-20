@@ -1,5 +1,5 @@
 import { inject as service } from '@ember/service';
-import { observer, defineProperty } from '@ember/object';
+import { observer } from '@ember/object';
 import { A } from '@ember/array';
 import Helper from '@ember/component/helper';
 
