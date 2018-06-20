@@ -4,14 +4,10 @@ const Filter = require('broccoli-persistent-filter');
 
 class SQLFilter extends Filter {
 
-  constructor(inputTree, options) {
-    super(inputTree, options);
-    this.extensions = ['sql'];
+  constructor(inputNode, options) {
+    super(inputNode, options);
+    this.extensions = ['surreal', 'sql'];
     this.targetExtension = 'js';
-  }
-
-  getDestFilePath(path) {
-    return null;
   }
 
   processString(source) {
@@ -23,14 +19,14 @@ class SQLFilter extends Filter {
 module.exports = {
   name: 'ember-surreal',
   setupPreprocessorRegistry(type, registry) {
-    if (type === 'parent') {
-        registry.add('js', {
-          name: 'ember-surreal',
-          ext: 'sql',
-          toTree(tree) {
-            return new SQLFilter(tree);
-          }
-        });
+    if (type === "parent") {
+      registry.add('js', {
+        name: 'ember-surreal',
+        ext: ['surreal', 'sql'],
+        toTree(tree) {
+          return new SQLFilter(tree);
+        }
+      });
     }
   }
 };
