@@ -27,8 +27,10 @@ export default Helper.extend({
 		let text = this.get('text');
 		let vars = this.get('vars');
 
+		this.set('content', []);
+
 		this.get('surreal').query(text, vars).then( (json) => {
-			defineProperty(this, 'content', json);
+			this.set('content', json);
 		});
 
 	}),
