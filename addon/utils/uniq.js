@@ -10,7 +10,7 @@ const random = function(size) {
 		return crypto.getRandomValues( new Uint32Array(size) );
 	}
 
-	return Array.from( new Array(size) ).map( () => {
+	return [].slice.call( new Array(size) ).map( () => {
 		return Math.abs(Math.random() * uint32 | 0);
 	});
 
@@ -18,7 +18,7 @@ const random = function(size) {
 
 export default function(size=64) {
 
-	return Array.from( random(size) ).map(v => {
+	return [].slice.call( random(size) ).map(v => {
 		return chars[v % chars.length];
 	}).join('');
 
