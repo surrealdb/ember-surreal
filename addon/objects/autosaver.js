@@ -82,13 +82,13 @@ const ModelSaver = ObjectProxy.extend({
 		this.content.eachAttribute( (name, attr) => {
 
 			if (attr.isFragment) {
-				if (attr.type.startsWith('-mf-fragment-array$')) {
+				if ( attr.type.indexOf('-mf-fragment-array$') === 0) {
 					return this.setupFragmentArrayProperty(name, `content.${name}`);
 				}
-				if (attr.type.startsWith('-mf-fragment$')) {
+				if ( attr.type.indexOf('-mf-fragment$') === 0) {
 					return this.setupModelProperty(name, `content.${name}`);
 				}
-				if (attr.type.startsWith('-mf-array$')) {
+				if ( attr.type.indexOf('-mf-array$') === 0) {
 					return this.setupArrayProperty(name, `content.${name}`);
 				}
 			} else {
