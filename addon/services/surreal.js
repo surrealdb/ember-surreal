@@ -7,7 +7,7 @@ import { A } from '@ember/array';
 import { key } from '../utils/conf';
 import guid from '../utils/guid';
 import Live from '../classes/live';
-import Config from '../mixins/config';
+import Config from '../-private/config';
 import Socket from '../classes/socket';
 import DS from 'ember-data';
 import EA from 'ember-ajax/errors';
@@ -133,7 +133,7 @@ export default Service.extend(Config, Evented, {
 
 		if (socket === true) {
 
-			this.ws = new Socket(this.conf.url, this.conf.opts, {
+			this.ws = new Socket(this.config.url, this.config.opts, {
 				log: this.get('storage.debug') === '*',
 			});
 
@@ -409,11 +409,11 @@ export default Service.extend(Config, Evented, {
 		} else {
 			let token = this.get('token');
 			if (token) {
-				this.conf.headers.Authorization = `Bearer ${token}`;
+				this.config.headers.Authorization = `Bearer ${token}`;
 			}
-			this.get('ajax').post(`${this.conf.uri}/rpc`, {
+			this.get('ajax').post(this.config.url, {
 				contentType: 'application/json',
-				headers: this.conf.headers,
+				headers: this.config.headers,
 				data: { id, method, params },
 			}).then(d => {
 				this.trigger(d.id, d);

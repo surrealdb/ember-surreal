@@ -28,22 +28,22 @@ export default Mixin.create({
 			throw new Error("Please set the `surreal.db` property in your environment config as a string.");
 		}
 
-		this.conf = { headers: {}, opts: [] };
+		this.config = { headers: {}, opts: [] };
 
-		this.conf.ns = config.surreal.ns;
-		this.conf.db = config.surreal.db;
+		this.config.ns = config.surreal.ns;
+		this.config.db = config.surreal.db;
 
-		this.conf.uri = config.surreal.uri || uri;
-		this.conf.url = this.conf.uri + '/rpc';
+		this.config.uri = config.surreal.uri || uri;
+		this.config.url = this.config.uri + '/rpc';
 
-		this.conf.headers.ID = unid();
-		this.conf.headers.NS = this.conf.ns;
-		this.conf.headers.DB = this.conf.db;
+		this.config.headers.ID = unid();
+		this.config.headers.NS = this.config.ns;
+		this.config.headers.DB = this.config.db;
 
-		this.conf.opts.push("json");
-		this.conf.opts.push(`id-${unid()}`);
-		this.conf.opts.push(`ns-${this.conf.ns}`);
-		this.conf.opts.push(`db-${this.conf.db}`);
+		this.config.opts.push("json");
+		this.config.opts.push(`id-${unid()}`);
+		this.config.opts.push(`ns-${this.config.ns}`);
+		this.config.opts.push(`db-${this.config.db}`);
 
 	},
 
