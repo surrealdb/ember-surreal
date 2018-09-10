@@ -8,8 +8,8 @@ export default function(table, options={}) {
 
 	bits.push('SELECT');
 
-	if (options.fetch) {
-		bits.push( options.fetch.join(', ') );
+	if (options.field) {
+		bits.push( options.field.join(', ') );
 	} else {
 		bits.push('*');
 	}
@@ -36,6 +36,10 @@ export default function(table, options={}) {
 	if (options.start) {
 		bits.push('START AT $start');
 		vars.start = options.start;
+	}
+
+	if (options.fetch) {
+		bits.push(`FETCH ${options.fetch.join(', ')}`);
 	}
 
 	if (options.version) {
