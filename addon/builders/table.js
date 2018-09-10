@@ -38,7 +38,7 @@ export default function(table, options={}) {
 		vars.start = options.start;
 	}
 
-	if (options.fetch) {
+	if (options.fetch && options.fetch.length) {
 		bits.push(`FETCH ${options.fetch.join(', ')}`);
 	}
 
