@@ -51,6 +51,28 @@ export default DS.SurrealAdapter = DS.Adapter.extend({
 		return this.get('surreal').delete(type.modelName, snapshot.id);
 	},
 
+	queryRecord(store, type, query={}) {
+
+		return new EmberPromise( (resolve, reject) => {
+
+			let { text, vars } = table(type.modelName, query);
+
+			return this.get('surreal').query(text, vars).then( ([json]) => {
+
+				json.result = json.result || [];
+
+				if (json.status == "OK") {
+					resolve(json.result);
+				} else {
+					reject(json);
+				}
+
+			});
+
+		});
+
+	},
+
 	count(store, type, query={}) {
 
 		if (query.count !== true) return resolve();
