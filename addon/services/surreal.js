@@ -9,6 +9,7 @@ import guid from '../utils/guid';
 import Live from '../classes/live';
 import Config from '../-private/config';
 import Socket from '../classes/socket';
+import Token from '../-private/token';
 import DS from 'ember-data';
 import EA from 'ember-ajax/errors';
 
@@ -21,6 +22,12 @@ export default Service.extend(Config, Evented, {
 	// sending and receiving data.
 
 	ws: null,
+
+	// The contents of the decoded
+	// JWT token used for retrieving
+	// the scope and JWT details.
+
+	jwt: null,
 
 	// Stores the collection of live
 	// query connections which are
@@ -105,6 +112,24 @@ export default Service.extend(Config, Evented, {
 			});
 
 		}
+
+		// Listen for invalidation events so that
+		// we can decode the JWT contents in order
+		// to store it in the JWT object.
+
+		this.on('invalidated', function() {
+			let t = this.get('token');
+			this.set('jwt', Token(t));
+		});
+
+		// Listen for authentication events so that
+		// we can decode the JWT contents in order
+		// to store it in the JWT object.
+
+		this.on('authenticated', function() {
+			let t = this.get('token');
+			this.set('jwt', Token(t));
+		});
 
 		// If the browser doesn't support sockets
 		// then we mark it as connected so that
