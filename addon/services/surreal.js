@@ -512,9 +512,9 @@ export default Service.extend(Config, Evented, {
 				return resolve();
 			case +1: // others
 				if (t) {
-					return r ? resolve(r) : reject( new DS.NotFoundError() );
+					return r.length ? resolve(r[0]) : reject( new DS.NotFoundError() );
 				} else {
-					return r ? resolve(r) : resolve([]);
+					return r.length ? resolve(r) : resolve([]);
 				}
 			}
 
