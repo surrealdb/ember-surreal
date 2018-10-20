@@ -9,6 +9,7 @@ Ember.libraries.register("Surreal", "0.1.0");
 
 export default function(application) {
 
+	application.inject('model', 'surreal', 'service:surreal');
 	application.inject('route', 'surreal', 'service:surreal');
 	application.inject('controller', 'surreal', 'service:surreal');
 	application.inject('component', 'surreal', 'service:surreal');
