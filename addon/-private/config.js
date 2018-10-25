@@ -28,8 +28,8 @@ export default Mixin.create({
 			throw new Error("Please set the `surreal.db` property in your environment config as a string.");
 		}
 
-		if (config.surreal.uri instanceof Function) {
-			config.surreal.uri = config.surreal.call(this);
+		if (config.surreal.uri === 'self') {
+			config.surreal.uri = window.location.origin;
 		}
 
 		this.config = { headers: {}, opts: [] };
