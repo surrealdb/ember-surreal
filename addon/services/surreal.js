@@ -499,7 +499,7 @@ export default Service.extend(Config, Evented, {
 			case -1: // delete
 				return resolve();
 			case +1: // others
-				if (t) {
+				if (typeof t === "string") {
 					return r.length ? resolve(r[0]) : reject( new DS.NotFoundError() );
 				} else {
 					return r.length ? resolve(r) : resolve([]);

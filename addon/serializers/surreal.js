@@ -63,12 +63,12 @@ export default DS.SurrealSerializer = DS.JSONSerializer.extend({
 
 	},
 
-	normalizeArrayResponse(store, type, records, id, method) {
-		return this._super(store, type, records || [], id, method);
+	normalizeArrayResponse(store, type, data, id, method) {
+		return this._super(store, type, data || [], id, method);
 	},
 
-	normalizeSingleResponse(store, type, records, id, method) {
-		return this._super(store, type, records[0] || {}, id, method);
+	normalizeSingleResponse(store, type, data, id, method) {
+		return this._super(store, type, data || {}, id, method);
 	},
 
 	normalizeEmbeddedRelationship(store, attr, data) {
