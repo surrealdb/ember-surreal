@@ -11,29 +11,31 @@ export default O.extend(Evented, {
 
 		this.opts = opts;
 
-		this.db.when('closed', () => {
-			this.id = null;
+		this.db.when('opened', () => {
+			this.open();
 		});
 
-		this.db.when('opened', () => {
-			if (!this.id) this.open();
+		this.db.when('closed', () => {
+			this.id = undefined;
 		});
 
 	},
 
 	kill() {
 
-		if (!this.id) return;
+		if (this.id === undefined) return;
 
 		let res = this.db.kill(this.id);
 
-		this.id = null;
+		this.id = undefined;
 
 		return res;
 
 	},
 
 	open() {
+
+		if (this.id !== undefined) return;
 
 		let bits = [];
 

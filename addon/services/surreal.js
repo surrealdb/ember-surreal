@@ -29,12 +29,6 @@ export default Service.extend(Config, Evented, {
 
 	jwt: null,
 
-	// Stores the collection of live
-	// query connections which are
-	// currently open with Surreal.
-
-	lives: A(),
-
 	// Store the requests which are
 	// currently waiting for the
 	// server to respond.
@@ -233,13 +227,7 @@ export default Service.extend(Config, Evented, {
 
 	sync(from, vars) {
 
-		if (socket === false) return;
-
-		let live = new Live(this, from, vars);
-
-		this.lives.push(live);
-
-		return live;
+		return (socket === false) ? null : new Live(this, from, vars);
 
 	},
 
