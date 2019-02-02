@@ -1,11 +1,8 @@
-import Ember from 'ember';
 import DS from 'ember-data';
 import ModelPlugin from '../-private/model';
 import StorePlugin from '../-private/store';
 import SurrealAdapter from '../adapters/surreal';
 import SurrealSerializer from '../serializers/surreal';
-
-Ember.libraries.register("Surreal", "0.1.0");
 
 export default function(application) {
 
