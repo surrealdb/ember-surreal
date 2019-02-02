@@ -17,7 +17,7 @@ class SQLFilter extends Filter {
 }
 
 module.exports = {
-  name: 'ember-surreal',
+  name: require('./package').name,
   setupPreprocessorRegistry(type, registry) {
     if (type === "parent") {
       registry.add('js', {

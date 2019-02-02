@@ -9,12 +9,13 @@ module.exports = {
   ],
   browser_args: {
     Chrome: {
-      mode: 'ci',
-      args: [
+      ci: [
         '--headless',
         '--no-sandbox',
+        '--mute-audio',
         '--disable-gpu',
         '--window-size=1440,900',
+        '--disable-dev-shm-usage',
         '--remote-debugging-port=9222',
         '--remote-debugging-address=0.0.0.0'
       ]
