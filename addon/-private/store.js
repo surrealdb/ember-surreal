@@ -76,7 +76,7 @@ export default Mixin.create(Evented, {
 		let serializer = this.serializerFor(data.meta.tb);
 
 		// Serialize the created/updated record
-		let json = serializer.normalizeSingleResponse(this, type, [data], data.id);
+		let json = serializer.normalizeSingleResponse(this, type, data, data.id);
 
 		// Push the created/updated record to the store
 		let record = this.push(json);
