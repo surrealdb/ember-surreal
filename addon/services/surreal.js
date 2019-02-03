@@ -352,7 +352,7 @@ export default Service.extend(Config, Evented, {
 		let id = guid();
 		return this.wait('attempted').then( () => {
 			return new EmberPromise( (resolve, reject) => {
-				this.one(id, e => this._result(e, t, resolve, reject) );
+				this.one(id, e => this._result(e, t, 'select', resolve, reject) );
 				this._send(id, "Select", [c, t]);
 			});
 		});
@@ -362,7 +362,7 @@ export default Service.extend(Config, Evented, {
 		let id = guid();
 		return this.wait('attempted').then( () => {
 			return new EmberPromise( (resolve, reject) => {
-				this.one(id, e => this._result(e, t, resolve, reject) );
+				this.one(id, e => this._result(e, t, 'create', resolve, reject) );
 				this._send(id, "Create", [c, t, d]);
 			});
 		});
@@ -372,7 +372,7 @@ export default Service.extend(Config, Evented, {
 		let id = guid();
 		return this.wait('attempted').then( () => {
 			return new EmberPromise( (resolve, reject) => {
-				this.one(id, e => this._result(e, t, resolve, reject) );
+				this.one(id, e => this._result(e, t, 'update', resolve, reject) );
 				this._send(id, "Update", [c, t, d]);
 			});
 		});
@@ -382,7 +382,7 @@ export default Service.extend(Config, Evented, {
 		let id = guid();
 		return this.wait('attempted').then( () => {
 			return new EmberPromise( (resolve, reject) => {
-				this.one(id, e => this._result(e, t, resolve, reject) );
+				this.one(id, e => this._result(e, t, 'change', resolve, reject) );
 				this._send(id, "Change", [c, t, d]);
 			});
 		});
@@ -392,7 +392,7 @@ export default Service.extend(Config, Evented, {
 		let id = guid();
 		return this.wait('attempted').then( () => {
 			return new EmberPromise( (resolve, reject) => {
-				this.one(id, e => this._result(e, t, resolve, reject) );
+				this.one(id, e => this._result(e, t, 'modify', resolve, reject) );
 				this._send(id, "Modify", [c, t, d]);
 			});
 		});
@@ -402,7 +402,7 @@ export default Service.extend(Config, Evented, {
 		let id = guid();
 		return this.wait('attempted').then( () => {
 			return new EmberPromise( (resolve, reject) => {
-				this.one(id, e => this._delete(e, t, resolve, reject) );
+				this.one(id, e => this._result(e, t, 'delete', resolve, reject) );
 				this._send(id, "Delete", [c, t]);
 			});
 		});
@@ -448,7 +448,7 @@ export default Service.extend(Config, Evented, {
 		return resolve();
 	},
 
-	_delete(e, t, resolve, reject) {
+	_result(e, t, a, resolve, reject) {
 		if (e.error) {
 			return reject( new DS.InvalidError(e.error.message) );
 		} else if (e.result) {
@@ -456,21 +456,7 @@ export default Service.extend(Config, Evented, {
 				e.result[0].status,
 				e.result[0].result,
 				e.result[0].detail,
-				-1, t, resolve, reject,
-			)
-		}
-		return resolve();
-	},
-
-	_result(e, t, resolve, reject) {
-		if (e.error) {
-			return reject( new DS.InvalidError(e.error.message) );
-		} else if (e.result) {
-			return this._output(
-				e.result[0].status,
-				e.result[0].result,
-				e.result[0].detail,
-				+1, t, resolve, reject,
+				a, t, resolve, reject,
 			)
 		}
 		return resolve();
@@ -496,13 +482,15 @@ export default Service.extend(Config, Evented, {
 			return reject( new DS.ConflictError() );
 		case 'OK':
 			switch (a) {
-			case -1: // delete
+			case 'delete':
 				return resolve();
-			case +1: // others
+			case 'modify':
+				return r && r.length ? resolve(r[0]) : resolve([]);
+			default:
 				if (typeof t === "string") {
-					return r.length ? resolve(r[0]) : reject( new DS.NotFoundError() );
+					return r && r.length ? resolve(r[0]) : reject( new DS.NotFoundError() );
 				} else {
-					return r.length ? resolve(r) : resolve([]);
+					return r && r.length ? resolve(r) : resolve([]);
 				}
 			}
 
