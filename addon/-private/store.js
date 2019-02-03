@@ -28,33 +28,6 @@ export default Mixin.create(Evented, {
 
 	},
 
-	didLoad(/*record*/) {
-
-		this._super(...arguments);
-
-	},
-
-	didCreate(/*record*/) {
-
-		this._super(...arguments);
-
-	},
-
-	didUpdate(/*record*/) {
-
-		this._super(...arguments);
-
-	},
-
-	didDelete(record) {
-
-		this._super(...arguments);
-
-		// Unload the record
-		this.unloadRecord(record);
-
-	},
-
 	didRemove(action, id) {
 
 		this._super(...arguments);
@@ -63,7 +36,7 @@ export default Mixin.create(Evented, {
 
 		let record = this.peekRecord(tb, id);
 
-		if (record) this.didDelete(record);
+		if (record) record.unloadRecord();
 
 	},
 
