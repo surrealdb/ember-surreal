@@ -225,12 +225,6 @@ export default Service.extend(Config, Evented, {
 
 	},
 
-	sync(from, vars) {
-
-		return (socket === false) ? null : new Live(this, from, vars);
-
-	},
-
 	// --------------------------------------------------
 	// Helper methods
 	// --------------------------------------------------
@@ -254,6 +248,14 @@ export default Service.extend(Config, Evented, {
 				this.one(e, resolve);
 			});
 		}
+	},
+
+	// --------------------------------------------------
+	// Methods for sycning
+	// --------------------------------------------------
+
+	sync() {
+		if (socket) return new Live(this, ...arguments);
 	},
 
 	// --------------------------------------------------

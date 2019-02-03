@@ -1,9 +1,6 @@
-import O from '@ember/object';
-import Evented from '@ember/object/evented';
+export default class Live {
 
-export default O.extend(Evented, {
-
-	init(db, what=[], opts={}) {
+	constructor(db, what=[], opts={}) {
 
 		this.db = db;
 
@@ -19,7 +16,7 @@ export default O.extend(Evented, {
 			this.id = undefined;
 		});
 
-	},
+	}
 
 	kill() {
 
@@ -31,7 +28,7 @@ export default O.extend(Evented, {
 
 		return res;
 
-	},
+	}
 
 	open() {
 
@@ -61,6 +58,6 @@ export default O.extend(Evented, {
 			}
 		});
 
-	},
+	}
 
-});
+}
