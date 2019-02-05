@@ -488,6 +488,10 @@ export default Service.extend(Config, Evented, {
 				return resolve();
 			case 'modify':
 				return r && r.length ? resolve(r[0]) : resolve([]);
+			case 'create':
+				return r && r.length ? resolve(r[0]) : resolve({});
+			case 'update':
+				return r && r.length ? resolve(r[0]) : resolve({});
 			default:
 				if (typeof t === "string") {
 					return r && r.length ? resolve(r[0]) : reject( new DS.NotFoundError() );
