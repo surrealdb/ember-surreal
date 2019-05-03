@@ -61,8 +61,12 @@ export default DS.SurrealAdapter = DS.Adapter.extend({
 
 				json.result = json.result || [];
 
-				if (json.status == "OK") {
-					resolve(json.result);
+				if (json.status === "OK") {
+					if (json.result[0]) {
+						resolve(json.result[0]);
+					} else {
+						reject(json);
+					}
 				} else {
 					reject(json);
 				}
@@ -85,7 +89,7 @@ export default DS.SurrealAdapter = DS.Adapter.extend({
 
 				json.result = json.result || [];
 
-				if (json.status == "OK") {
+				if (json.status === "OK") {
 					if (json.result[0]) {
 						resolve({ total: json.result[0].count })
 					} else {
@@ -113,7 +117,7 @@ export default DS.SurrealAdapter = DS.Adapter.extend({
 
 					json.result = json.result || [];
 
-					if (json.status == "OK") {
+					if (json.status === "OK") {
 						json.result.meta = meta;
 						resolve(json.result);
 					} else {
