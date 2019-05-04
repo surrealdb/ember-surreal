@@ -1,145 +1,151 @@
 /*eslint no-console: "off"*/
+import WebSocket from '../utils/ws';
 
-export default function(url, protocols=["json", "pack"], options={}) {
+const settings = {
+	// Show debug messages?
+	log: false,
+	// Connect automatically?
+	autoConnect: false,
+	// Delay in milliseconds before failing
+	timeoutInterval: 5000,
+	// Delay in milliseconds before reconnecting
+	reconnectInterval: 1000,
+	// Maximum delay in milliseconds before reconnecting
+	maxReconnectInterval: 15000,
+	// The backoff rate for reconnection timeout delays
+	reconnectDecay: 1.5,
+	// The binary type, possible values 'blob' or 'arraybuffer'
+	binaryType: 'blob'
+};
 
-	var settings = {
-		// Show debug messages?
-		log: false,
-		// Connect automatically?
-		autoConnect: false,
-		// Delay in milliseconds before failing
-		timeoutInterval: 5000,
-		// Delay in milliseconds before reconnecting
-		reconnectInterval: 1000,
-		// Maximum delay in milliseconds before reconnecting
-		maxReconnectInterval: 15000,
-		// The backoff rate for reconnection timeout delays
-		reconnectDecay: 1.5,
-		/** The binary type, possible values 'blob' or 'arraybuffer', default 'blob'. */
-		binaryType: 'blob'
-	}
+export default class Socket {
 
-	for (var key in settings) {
-		if (typeof options[key] !== 'undefined') {
-			this[key] = options[key];
-		} else {
-			this[key] = settings[key];
+	constructor(url, protocols=["json", "pack"], options={}) {
+
+		for (var key in settings) {
+			if (typeof options[key] !== 'undefined') {
+				this[key] = options[key];
+			} else {
+				this[key] = settings[key];
+			}
 		}
+
+		// The websocket
+		this.ws = null;
+
+		// The websocket URL
+		this.url = url;
+
+		// If force closed or not
+		this.closed = false;
+
+		// If socket timedout or not
+		this.timedout = false;
+
+		// The selected websocket protocol
+		this.protocol = null;
+
+		// The predefined allowed protocols
+		this.protocols = protocols;
+
+		// The number of attempted reconnects sofar
+		this.reconnectAttempts = 0;
+
+		// Normalize the url if a http or https endpoint has been defined.
+		this.url = String(this.url).replace('http://', 'ws://')
+		this.url = String(this.url).replace('https://', 'wss://');
+
+		this.autoConnect ? this.open() : null;
+
 	}
 
-	var self = this;
+	open() {
 
-	// The websocket
-	this.ws = null;
+		this.ws = new WebSocket(this.url, this.protocols);
 
-	// The websocket URL
-	this.url = url;
+		this.debug('connecting');
 
-	// If force closed or not
-	this.closed = false;
+		this.onconnecting ? this.onconnecting() : null;
 
-	// If socket timedout or not
-	this.timedout = false;
+		var timeout = setTimeout( () => {
+			this.debug('timeout');
+			this.timedout = true;
+			this.ws.close();
+			this.timedout = false;
+		}, this.timeoutInterval);
 
-	// The selected websocket protocol
-	this.protocol = null;
-
-	// The predefined allowed protocols
-	this.protocols = protocols;
-
-	// The number of attempted reconnects sofar
-	this.reconnectAttempts = 0;
-
-	// Normalize the url if a http or https endpoint has been defined.
-	this.url = String(this.url).replace('http://', 'ws://').replace('https://', 'wss://');
-
-	this.open = function() {
-
-		self.ws = new WebSocket(this.url, this.protocols);
-
-		self.debug('connecting');
-
-		self.onconnecting ? self.onconnecting() : null;
-
-		var timeout = setTimeout(function() {
-			self.debug('timeout');
-			self.timedout = true;
-			self.ws.close();
-			self.timedout = false;
-		}, self.timeoutInterval);
-
-		self.ws.onopen = function(e) {
-			self.debug('opened');
+		this.ws.onopen = (e) => {
+			this.debug('opened');
 			clearTimeout(timeout);
-			self.onopen ? self.onopen(e) : null;
-			self.protocol = self.ws.protocol;
-			self.reconnectAttempts = 0;
+			this.onopen ? this.onopen(e) : null;
+			this.protocol = this.ws.protocol;
+			this.reconnectAttempts = 0;
 		};
 
-		self.ws.onclose = function(e) {
-			self.debug('closed');
+		this.ws.onclose = (e) => {
+			this.debug('closed');
 			clearTimeout(timeout);
-			self.onclose ? self.onclose(e) : null;
-			if (self.closed === false) {
-				setTimeout(function() {
-					self.reconnectAttempts++;
-					self.open();
-				}, self.time());
+			this.onclose ? this.onclose(e) : null;
+			if (this.closed === false) {
+				setTimeout( () => {
+					this.reconnectAttempts++;
+					this.open();
+				}, this.time());
 			}
 		};
 
-		self.ws.onerror = function(e) {
-			self.debug('failed');
-			self.onerror ? self.onerror(e) : null;
+		this.ws.onerror = (e) => {
+			this.debug('failed');
+			this.onerror ? this.onerror(e) : null;
 		};
 
-		self.ws.onmessage = function(e) {
-			self.debug('received', e.data);
-			self.onmessage ? self.onmessage(e) : null;
+		this.ws.onmessage = (e) => {
+			this.debug('received', e.data);
+			this.onmessage ? this.onmessage(e) : null;
 		};
 
-	};
+	}
 
-	this.time = function() {
-		let decay = self.reconnectDecay;
-		let delay = self.reconnectInterval;
-		let count = self.reconnectAttempts;
+	time() {
+		let decay = this.reconnectDecay;
+		let delay = this.reconnectInterval;
+		let count = this.reconnectAttempts;
 		let calcs = delay * Math.pow(decay, count);
-		return Math.min(calcs, self.maxReconnectInterval);
-	};
+		return Math.min(calcs, this.maxReconnectInterval);
+	}
 
-	this.send = function(data) {
-		self.debug('sending', data);
-		self.ws ? self.ws.send(data) : null;
-	};
+	send(data) {
+		this.debug('sending', data);
+		this.ws ? this.ws.send(data) : null;
+	}
 
-	this.close = function(code=1000, reason) {
-		self.closed = true;
-		self.ws ? self.ws.close(code, reason) : null;
-	};
+	close(code, reason) {
+		this.closed = true;
+		this.ws ? this.ws.close(code, reason) : null;
+	}
 
-	this.debug = function(t, j="{}") {
+	debug(t, j="{}") {
 
 		if (!this.log) return;
 
 		let d = JSON.parse(j);
 
 		if (d.error) {
-			console.group('[WebSocket]', t, self.url, d.id);
+			console.group('[WebSocket]', t, this.url, d.id);
 			console.error( new Error(d.error.message) );
 			console.groupEnd();
 			return;
 		}
 
 		if (d.method) {
-			console.group('[WebSocket]', t, self.url, d.id);
+			console.group('[WebSocket]', t, this.url, d.id);
 			console.info( { method:d.method, params:d.params } );
 			console.groupEnd();
 			return;
 		}
 
 		if (d.result) {
-			console.group('[WebSocket]', t, self.url, d.id);
+			console.group('[WebSocket]', t, this.url, d.id);
 			if (Array.isArray(d.result)) {
 				d.result.forEach(q => { console.info(q) });
 			} else {
@@ -149,12 +155,10 @@ export default function(url, protocols=["json", "pack"], options={}) {
 			return;
 		}
 
-		console.info('[WebSocket]', t, self.url);
+		console.info('[WebSocket]', t, this.url);
 
-	};
-
-	this.autoConnect ? this.open() : null;
-
-	return this;
+	}
 
 }
+
+

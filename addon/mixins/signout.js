@@ -1,11 +1,11 @@
-import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
+import { inject } from '@ember/service';
 
 export default Mixin.create({
 
-	store: service(),
+	store: inject(),
 
-	surreal: service(),
+	surreal: inject(),
 
 	redirectAfterSignout: 'login',
 

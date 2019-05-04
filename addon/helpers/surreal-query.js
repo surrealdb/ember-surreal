@@ -1,13 +1,13 @@
-import { inject as service } from '@ember/service';
+import Helper from '@ember/component/helper';
+import { inject } from '@ember/service';
 import { observer } from '@ember/object';
 import { A } from '@ember/array';
-import Helper from '@ember/component/helper';
 
 export default Helper.extend({
 
 	content: A(),
 
-	surreal: service(),
+	surreal: inject(),
 
 	compute([text], vars) {
 

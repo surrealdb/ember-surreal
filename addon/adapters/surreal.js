@@ -1,11 +1,11 @@
-import { resolve, Promise as EmberPromise } from 'rsvp';
-import { inject as service } from '@ember/service';
-import { count, table } from "../builders";
 import DS from "ember-data";
+import { resolve, Promise as EmberPromise } from 'rsvp';
+import { inject } from '@ember/service';
+import { count, table } from "../builders";
 
 export default DS.SurrealAdapter = DS.Adapter.extend({
 
-	surreal: service(),
+	surreal: inject(),
 
 	defaultSerializer: '-surreal',
 

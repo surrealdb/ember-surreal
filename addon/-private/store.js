@@ -1,11 +1,11 @@
-import { A } from '@ember/array';
-import { inject as service } from '@ember/service';
-import Evented from '@ember/object/evented';
 import Mixin from '@ember/object/mixin';
+import Evented from '@ember/object/evented';
+import { inject } from '@ember/service';
+import { A } from '@ember/array';
 
 export default Mixin.create(Evented, {
 
-	surreal: service(),
+	surreal: inject(),
 
 	init() {
 

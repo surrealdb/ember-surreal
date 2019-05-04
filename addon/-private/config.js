@@ -1,6 +1,6 @@
-import { typeOf } from '@ember/utils';
-import { getOwner } from '@ember/application';
 import Mixin from '@ember/object/mixin';
+import { getOwner } from '@ember/application';
+import { typeOf } from '@ember/utils';
 import { uri } from '../utils/conf';
 import unid from '../utils/unid';
 

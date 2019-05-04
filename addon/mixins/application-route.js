@@ -1,15 +1,15 @@
-import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
+import { inject } from '@ember/service';
 import { schedule } from '@ember/runloop';
 import { resolve } from 'rsvp';
 
 export default Mixin.create({
 
-	store: service(),
+	store: inject(),
 
-	surreal: service(),
+	surreal: inject(),
 
-	storage: service(),
+	storage: inject(),
 
 	session: resolve,
 

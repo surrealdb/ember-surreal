@@ -1,9 +1,9 @@
-import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
+import { inject } from '@ember/service';
 
 export default Mixin.create({
 
-	surreal: service(),
+	surreal: inject(),
 
 	redirectIfAuthenticated: 'index',
 
