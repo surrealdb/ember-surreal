@@ -1,5 +1,5 @@
 import DS from "ember-data";
-import { resolve, Promise as EmberPromise } from 'rsvp';
+import { resolve, Promise } from 'rsvp';
 import { inject } from '@ember/service';
 import { count, table } from "../builders";
 
@@ -53,7 +53,7 @@ export default DS.SurrealAdapter = DS.Adapter.extend({
 
 	queryRecord(store, type, query={}) {
 
-		return new EmberPromise( (resolve, reject) => {
+		return new Promise( (resolve, reject) => {
 
 			let { text, vars } = table(type.modelName, query);
 
@@ -81,7 +81,7 @@ export default DS.SurrealAdapter = DS.Adapter.extend({
 
 		if (query.count !== true) return resolve();
 
-		return new EmberPromise( (resolve/*, reject*/) => {
+		return new Promise( (resolve/*, reject*/) => {
 
 			let { text, vars } = count(type.modelName, query);
 
@@ -107,7 +107,7 @@ export default DS.SurrealAdapter = DS.Adapter.extend({
 
 	query(store, type, query={}) {
 
-		return new EmberPromise( (resolve, reject) => {
+		return new Promise( (resolve, reject) => {
 
 			return this.count(store, type, query).then(meta => {
 
