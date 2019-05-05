@@ -11,7 +11,7 @@ const settings = {
 	// Delay in milliseconds before reconnecting
 	reconnectInterval: 1000,
 	// Maximum delay in milliseconds before reconnecting
-	maxReconnectInterval: 15000,
+	maxReconnectInterval: 5000,
 	// The backoff rate for reconnection timeout delays
 	reconnectDecay: 1.5,
 	// The binary type, possible values 'blob' or 'arraybuffer'
