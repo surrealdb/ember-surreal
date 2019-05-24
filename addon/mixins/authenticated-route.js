@@ -14,7 +14,7 @@ export default Mixin.create({
 		// Listen to invalidation events
 		// so that we can redirect routes.
 
-		this.get('surreal').on('invalidated', this, this.invalidate);
+		this.surreal.on('invalidated', this, this.invalidate);
 
 	},
 
@@ -25,7 +25,7 @@ export default Mixin.create({
 		// Listen to invalidation events
 		// so that we can redirect routes.
 
-		this.get('surreal').off('invalidated', this, this.invalidate);
+		this.surreal.off('invalidated', this, this.invalidate);
 
 	},
 
@@ -53,7 +53,7 @@ export default Mixin.create({
 
 		// Wait for Surreal to be ready.
 
-		return this.get('surreal').wait('attempted').then( () => {
+		return this.surreal.wait('attempted').then( () => {
 
 			// If we are not authenticated then redirect.
 

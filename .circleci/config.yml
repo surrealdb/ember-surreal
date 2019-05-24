@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run:
           name: Install
-          command: make install
+          command: npm install
       - run:
           name: Tests
-          command: make tests
+          command: npm test

@@ -13,7 +13,7 @@ export default Mixin.create({
 
 		// Signout and remove the token.
 
-		return this.get('surreal').invalidate().then( () => {
+		return this.surreal.invalidate().then( () => {
 
 			// Unload all data store records.
 

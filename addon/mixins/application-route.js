@@ -25,18 +25,10 @@ export default Mixin.create({
 
 		this._super(...arguments);
 
-		// Get the data store
-
-		let store = this.get('store');
-
-		// Get the surreal service
-
-		let surreal = this.get('surreal');
-
 		// If the Surreal connection
 		// is opened, then run this.
 
-		surreal.on('opened', () => {
+		this.surreal.on('opened', () => {
 			schedule('actions', () => {
 				this.connect();
 			});
@@ -45,7 +37,7 @@ export default Mixin.create({
 		// If the Surreal connection
 		// is closed, then run this.
 
-		surreal.on('closed', () => {
+		this.surreal.on('closed', () => {
 			schedule('actions', () => {
 				this.disconnect();
 			});
@@ -54,12 +46,12 @@ export default Mixin.create({
 		// If the invalidation status is
 		// changed then update the session.
 
-		surreal.on('invalidated', () => {
+		this.surreal.on('invalidated', () => {
 			schedule('actions', () => {
-				store.unloadAll();
 				this.invalidate();
+				this.store.unloadAll();
 				this.session().then(s => {
-					surreal.set('session', s);
+					this.surreal.set('session', s);
 				});
 			});
 		});
@@ -67,11 +59,11 @@ export default Mixin.create({
 		// If the authentication status is
 		// changed then update the session.
 
-		surreal.on('authenticated', () => {
+		this.surreal.on('authenticated', () => {
 			schedule('actions', () => {
 				this.authenticate();
 				this.session().then(s => {
-					surreal.set('session', s);
+					this.surreal.set('session', s);
 				});
 			});
 		});
@@ -79,7 +71,7 @@ export default Mixin.create({
 		// Ensure that we have a connection
 		// to Surreal before continuing.
 
-		return surreal.wait('opened');
+		return this.surreal.wait('opened');
 
 	},
 

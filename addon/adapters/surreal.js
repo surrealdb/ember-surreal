@@ -26,29 +26,30 @@ export default DS.SurrealAdapter = DS.Adapter.extend({
 	},
 
 	findAll(store, type) {
-		return this.get('surreal').select(type.modelName);
+		return this.surreal.select(type.modelName);
 	},
 
 	findMany(store, type, ids) {
-		return this.get('surreal').select(type.modelName, ids);
+		return this.surreal.select(type.modelName, ids);
 	},
 
 	findRecord(store, type, id) {
-		return this.get('surreal').select(type.modelName, id);
+		return this.surreal.select(type.modelName, id);
 	},
 
 	createRecord(store, type, snapshot) {
-		let data = store.serializerFor(type.modelName).serialize(snapshot);
-		return this.get('surreal').create(type.modelName, snapshot.id, data);
-	},
-
-	updateRecord(store, type, snapshot) {
-		let data = store.serializerFor(type.modelName).serialize(snapshot);
-		return this.get('surreal').change(type.modelName, snapshot.id, data);
+		// This returns the promise (success / failue)
+		return snapshot.record.get('creater').perform(store, type, snapshot);
 	},
 
 	deleteRecord(store, type, snapshot) {
-		return this.get('surreal').delete(type.modelName, snapshot.id);
+		// This returns the promise (success / failue)
+		return snapshot.record.get('deleter').perform(store, type, snapshot);
+	},
+
+	updateRecord(store, type, snapshot) {
+		// No promise returned, as the item is diffed
+		snapshot.record.get('updater').perform(store, type, snapshot);
 	},
 
 	queryRecord(store, type, query={}) {
@@ -57,7 +58,7 @@ export default DS.SurrealAdapter = DS.Adapter.extend({
 
 			let { text, vars } = table(type.modelName, query);
 
-			return this.get('surreal').query(text, vars).then( ([json]) => {
+			return this.surreal.query(text, vars).then( ([json]) => {
 
 				json.result = json.result || [];
 
@@ -85,7 +86,7 @@ export default DS.SurrealAdapter = DS.Adapter.extend({
 
 			let { text, vars } = count(type.modelName, query);
 
-			return this.get('surreal').query(text, vars).then( ([json]) => {
+			return this.surreal.query(text, vars).then( ([json]) => {
 
 				json.result = json.result || [];
 
@@ -113,7 +114,7 @@ export default DS.SurrealAdapter = DS.Adapter.extend({
 
 				let { text, vars } = table(type.modelName, query);
 
-				return this.get('surreal').query(text, vars).then( ([json]) => {
+				return this.surreal.query(text, vars).then( ([json]) => {
 
 					json.result = json.result || [];
 
