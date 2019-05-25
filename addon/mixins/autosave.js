@@ -6,10 +6,6 @@ import { task } from 'ember-concurrency';
 import Patch from '../classes/patch';
 import Diff from '../classes/diff';
 
-const FMT = function(val) {
-	return JSON.stringify(val);
-};
-
 const DIFF = function(old, now) {
 	let v = new Diff(old, now);
 	return v.output();
@@ -73,7 +69,7 @@ export default Mixin.create({
 
 			// Filter out any sent diff values
 			diff = diff.filter(d => {
-				return !change.map(FMT).includes( FMT(d) );
+				return !change.map(v => v.path).includes(d.path);
 			});
 
 			// Patch the client value
