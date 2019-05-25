@@ -1,6 +1,5 @@
 import Mixin from '@ember/object/mixin';
 import { observer } from '@ember/object';
-import { debounce } from '@ember/runloop';
 import { inject } from '@ember/service';
 import { timeout } from 'ember-concurrency';
 import { task } from 'ember-concurrency';
