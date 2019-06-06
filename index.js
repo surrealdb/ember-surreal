@@ -20,14 +20,6 @@ module.exports = {
 
 	name: require('./package').name,
 
-	included(app) {
-		this._super.included(app);
-		this.app.import('vendor/diffmatchpatch.js');
-		this.app.import('vendor/dmp.js', {
-			exports: { marked: ['default'] }
-		});
-	},
-
 	setupPreprocessorRegistry(type, registry) {
 		if (type === "parent") {
 			registry.add('js', {

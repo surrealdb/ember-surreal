@@ -37,19 +37,28 @@ export default DS.SurrealAdapter = DS.Adapter.extend({
 		return this.surreal.select(type.modelName, id);
 	},
 
-	createRecord(store, type, snapshot) {
-		// This returns the promise (success / failue)
-		return snapshot.record.get('creater').perform(store, type, snapshot);
+	async createRecord(store, type, snapshot) {
+		try {
+			return await snapshot.record.get('creater').perform(store, type, snapshot);
+		} catch (e) {
+			return null;
+		}
 	},
 
-	deleteRecord(store, type, snapshot) {
-		// This returns the promise (success / failue)
-		return snapshot.record.get('deleter').perform(store, type, snapshot);
+	async deleteRecord(store, type, snapshot) {
+		try {
+			return await snapshot.record.get('deleter').perform(store, type, snapshot);
+		} catch (e) {
+			return null;
+		}
 	},
 
-	updateRecord(store, type, snapshot) {
-		// No promise returned, as the item is diffed
-		snapshot.record.get('updater').perform(store, type, snapshot);
+	async updateRecord(store, type, snapshot) {
+		try {
+			return await snapshot.record.get('updater').perform(store, type, snapshot);
+		} catch (e) {
+			return null;
+		}
 	},
 
 	queryRecord(store, type, query={}) {
