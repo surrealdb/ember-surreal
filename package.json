@@ -1,6 +1,6 @@
 {
   "name": "ember-surreal",
-  "version": "0.8.4",
+  "version": "0.8.5",
   "description": "A realtime SurrealDB data adapter for Ember.js",
   "keywords": [
     "ember-addon"
