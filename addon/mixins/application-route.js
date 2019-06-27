@@ -50,8 +50,8 @@ export default Mixin.create({
 			schedule('actions', () => {
 				this.invalidate();
 				this.store.unloadAll();
-				this.session().then(s => {
-					this.surreal.set('session', s);
+				this.surreal.info().then(info => {
+					this.surreal.set('session', info);
 				});
 			});
 		});
@@ -62,8 +62,8 @@ export default Mixin.create({
 		this.surreal.on('authenticated', () => {
 			schedule('actions', () => {
 				this.authenticate();
-				this.session().then(s => {
-					this.surreal.set('session', s);
+				this.surreal.info().then(info => {
+					this.surreal.set('session', info);
 				});
 			});
 		});
