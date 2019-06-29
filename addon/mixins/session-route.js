@@ -13,7 +13,7 @@ export default Mixin.create({
 		// to authenticate before continuing.
 
 		return this.surreal.info().then(info => {
-			this.surreal.set('session', info);
+			this.surreal.set('session', this.session(info));
 		});
 
 	},

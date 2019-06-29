@@ -51,7 +51,7 @@ export default Mixin.create({
 				this.invalidate();
 				this.store.unloadAll();
 				this.surreal.info().then(info => {
-					this.surreal.set('session', info);
+					this.surreal.set('session', this.session(info));
 				});
 			});
 		});
@@ -63,7 +63,7 @@ export default Mixin.create({
 			schedule('actions', () => {
 				this.authenticate();
 				this.surreal.info().then(info => {
-					this.surreal.set('session', info);
+					this.surreal.set('session', this.session(info));
 				});
 			});
 		});
