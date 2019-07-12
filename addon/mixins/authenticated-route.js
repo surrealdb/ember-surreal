@@ -5,7 +5,7 @@ export default Mixin.create({
 
 	surreal: inject(),
 
-	redirectIfInvalidated: 'login',
+	redirectIfInvalidated: 'signin',
 
 	activate() {
 
