@@ -7,11 +7,11 @@ const settings = {
 	// Connect automatically?
 	autoConnect: false,
 	// Delay in milliseconds before failing
-	timeoutInterval: 5000,
+	timeoutInterval: 30000,
 	// Delay in milliseconds before reconnecting
-	reconnectInterval: 1000,
+	reconnectInterval: 5000,
 	// Maximum delay in milliseconds before reconnecting
-	maxReconnectInterval: 5000,
+	maxReconnectInterval: 15000,
 	// The backoff rate for reconnection timeout delays
 	reconnectDecay: 1.5,
 	// The binary type, possible values 'blob' or 'arraybuffer'
