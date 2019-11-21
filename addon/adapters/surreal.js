@@ -72,8 +72,7 @@ export default DS.SurrealAdapter = DS.Adapter.extend({
 				if (cached) {
 					let element = document.getElementById(`shoebox-${query.id}`);
 					element && element.parentNode.removeChild(element);
-					this.fastboot.shoebox[query.id] = undefined;
-					cached = JSON.parse(cached);
+					delete this.fastboot.shoebox[query.id];
 					resolve(cached);
 					return;
 				}
@@ -88,7 +87,7 @@ export default DS.SurrealAdapter = DS.Adapter.extend({
 				if (json.status === "OK") {
 					if (json.result[0]) {
 						if (this.fastboot.isFastBoot && query.id) {
-							this.fastboot.shoebox.put(query.id, JSON.stringify(json.result[0]));
+							this.fastboot.shoebox.put(query.id, json.result[0]);
 						}
 						resolve(json.result[0]);
 					} else {
@@ -141,8 +140,7 @@ export default DS.SurrealAdapter = DS.Adapter.extend({
 				if (cached) {
 					let element = document.getElementById(`shoebox-${query.id}`);
 					element && element.parentNode.removeChild(element);
-					this.fastboot.shoebox[query.id] = undefined;
-					cached = JSON.parse(cached);
+					delete this.fastboot.shoebox[query.id];
 					resolve(cached);
 					return;
 				}
@@ -158,7 +156,7 @@ export default DS.SurrealAdapter = DS.Adapter.extend({
 
 					if (json.status === "OK") {
 						if (this.fastboot.isFastBoot && query.id) {
-							this.fastboot.shoebox.put(query.id, JSON.stringify(json.result));
+							this.fastboot.shoebox.put(query.id, json.result);
 						}
 						json.result.meta = meta;
 						resolve(json.result);
