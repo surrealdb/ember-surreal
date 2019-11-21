@@ -9,12 +9,10 @@ export default Mixin.create({
 
 		this._super(...arguments);
 
-		// Ensure that we have attempted
-		// to authenticate before continuing.
+		// Ensure that we have a connection
+		// to Surreal before continuing.
 
-		return this.surreal.info().then(info => {
-			this.surreal.set('session', this.session(info));
-		});
+		return this.surreal.wait('opened');
 
 	},
 
