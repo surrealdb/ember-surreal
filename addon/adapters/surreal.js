@@ -7,6 +7,8 @@ export default DS.SurrealAdapter = DS.Adapter.extend({
 
 	surreal: inject(),
 
+	fastboot: inject(),
+
 	defaultSerializer: '-surreal',
 
 	shouldReloadAll() {
@@ -65,6 +67,18 @@ export default DS.SurrealAdapter = DS.Adapter.extend({
 
 		return new Promise( (resolve, reject) => {
 
+			if (query.id) {
+				let cached = this.fastboot.shoebox.retrieve(query.id);
+				if (cached) {
+					let element = document.getElementById(`shoebox-${query.id}`);
+					element && element.parentNode.removeChild(element);
+					this.fastboot.shoebox[query.id] = undefined;
+					cached = JSON.parse(cached);
+					resolve(cached);
+					return;
+				}
+			}
+
 			let { text, vars } = table(type.modelName, query);
 
 			return this.surreal.query(text, vars).then( ([json]) => {
@@ -73,6 +87,9 @@ export default DS.SurrealAdapter = DS.Adapter.extend({
 
 				if (json.status === "OK") {
 					if (json.result[0]) {
+						if (this.fastboot.isFastBoot && query.id) {
+							this.fastboot.shoebox.put(query.id, JSON.stringify(json.result[0]));
+						}
 						resolve(json.result[0]);
 					} else {
 						reject(json);
@@ -119,6 +136,18 @@ export default DS.SurrealAdapter = DS.Adapter.extend({
 
 		return new Promise( (resolve, reject) => {
 
+			if (query.id) {
+				let cached = this.fastboot.shoebox.retrieve(query.id);
+				if (cached) {
+					let element = document.getElementById(`shoebox-${query.id}`);
+					element && element.parentNode.removeChild(element);
+					this.fastboot.shoebox[query.id] = undefined;
+					cached = JSON.parse(cached);
+					resolve(cached);
+					return;
+				}
+			}
+
 			return this.count(store, type, query).then(meta => {
 
 				let { text, vars } = table(type.modelName, query);
@@ -128,6 +157,9 @@ export default DS.SurrealAdapter = DS.Adapter.extend({
 					json.result = json.result || [];
 
 					if (json.status === "OK") {
+						if (this.fastboot.isFastBoot && query.id) {
+							this.fastboot.shoebox.put(query.id, JSON.stringify(json.result));
+						}
 						json.result.meta = meta;
 						resolve(json.result);
 					} else {
