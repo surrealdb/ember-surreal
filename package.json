@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "ember-cli-babel": "^7.1.2",
-    "ws": "^7.0.0"
+    "ws": "^7.5.11"
   },
   "devDependencies": {
     "@ember/optional-features": "^0.6.3",
